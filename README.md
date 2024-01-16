@@ -73,9 +73,6 @@ python main.py
    - Choose the inner or outer mode then use the mouse to select your ROI.
 
 ## Contributors
-
-We would like to acknowledge the following individuals for their contributions to the research:
-
 <table>
   <tr>
     <td align="center">

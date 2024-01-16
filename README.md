@@ -3,7 +3,7 @@
 In this project, the goal is to design and implement a desktop program that illustrates the significance of magnitude and phase components, emphasizing frequency contributions within a 2D signal, particularly images. The software incorporates various features to enhance user interaction and customization.
 
 <div align="center">
-  <img src="data/screenshot.png" />
+  <img src="assets/screenshot.png" />
 </div>
 
 ## Table of Contents
@@ -73,6 +73,7 @@ python main.py
    - Choose the inner or outer mode then use the mouse to select your ROI.
 
 ## Contributors
+
 <table>
   <tr>
     <td align="center">

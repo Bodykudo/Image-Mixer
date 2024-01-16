@@ -37,7 +37,7 @@ In this project, the goal is to design and implement a desktop program that illu
 1. Clone this repository to your local machine.
 
 ```bash
-git clone https://github.com/yourusername/ImageMixer.git
+git clone https://github.com/Bodykudo/Image-Mixer.git
 ```
 
 2. Install the required dependencies.

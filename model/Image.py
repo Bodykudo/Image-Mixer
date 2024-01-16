@@ -15,7 +15,7 @@ class Image:
         - shape (tuple): The shape of the loaded image.
         - fft (numpy.ndarray): The 2D Fourier Transform of the image.
         - fft_shifted (numpy.ndarray): The shifted version of the Fourier Transform.
-        - mag (numpy.ndarray): The magnitude spectrum of the shifted Fourier Transform.
+        - magnitude (numpy.ndarray): The magnitude spectrum of the shifted Fourier Transform.
         - phase (numpy.ndarray): The phase spectrum of the shifted Fourier Transform.
         - real (numpy.ndarray): The real part of the shifted Fourier Transform.
         - imaginary (numpy.ndarray): The imaginary part of the shifted Fourier Transform.
@@ -23,33 +23,22 @@ class Image:
         """
         self.id = Image.id
         Image.id += 1
-        self.img_back_up = None
-        self.img = None
+        self.image = None
         self.shape = None
 
         self.fft = None
         self.fft_shifted = None
-        self.mag = None
+        self.magnitude = None
         self.phase = None
         self.real = None
         self.imaginary = None
         self.components_shifted = None
-        self.type_to_component = None
 
     def get_id(self):
         return self.id
 
-    def get_img(self):
-        return self.img.T
-
-    def set_img(self, img):
-        self.img = img
-
-    def get_shape(self):
-        return self.shape
-
-    def set_shape(self, shape):
-        self.shape = shape
+    def get_image(self):
+        return self.image.T
 
     def get_fft(self):
         return self.fft
@@ -57,7 +46,7 @@ class Image:
     def get_fft_shifted(self):
         return self.fft_shifted
 
-    def get_mag(self):
+    def get_magnitude(self):
         return self.components_shifted[0].T
 
     def get_phase(self):
@@ -69,10 +58,7 @@ class Image:
     def get_imaginary(self):
         return self.components_shifted[3]
 
-    def get_components_shifted(self):
-        return self.components_shifted
-
-    def load_img(self, pth):
+    def load_img(self, image_path):
         """
         Load and process the image from the specified file path.
 
@@ -86,10 +72,9 @@ class Image:
         Returns:
         - None
         """
-        self.img = cv2.imread(pth).astype(np.float32)
-        self.img = cv2.cvtColor(self.img, cv2.COLOR_BGR2GRAY)
-        self.shape = self.img.shape
-        self.img_back_up = self.img.copy()
+        self.image = cv2.imread(image_path).astype(np.float32)
+        self.image = cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
+        self.shape = self.image.shape
 
     def reshape(self, new_height, new_width):
         """
@@ -103,9 +88,9 @@ class Image:
         - None
         """
         # Resize the image
-        self.img = cv2.resize(self.img, (new_width, new_height))
+        self.image = cv2.resize(self.image, (new_width, new_height))
         # Update the shape attribute
-        self.shape = self.img.shape
+        self.shape = self.image.shape
 
     @classmethod
     def reshape_all(cls, image_instances):
@@ -120,8 +105,8 @@ class Image:
         - None
         """
         # Find the smallest image dimensions among all instances
-        min_height = min(inst.img.shape[0] for inst in image_instances)
-        min_width = min(inst.img.shape[1] for inst in image_instances)
+        min_height = min(inst.image.shape[0] for inst in image_instances)
+        min_width = min(inst.image.shape[1] for inst in image_instances)
 
         # Resize all images to the smallest dimensions
         for inst in image_instances:
@@ -140,13 +125,13 @@ class Image:
         - None
         """
         # Compute the 2D Fourier Transform
-        self.fft = np.fft.fft2(self.img)
+        self.fft = np.fft.fft2(self.image)
 
         # Shift the zero-frequency component to the center
         self.fft_shifted = np.fft.fftshift(self.fft)
 
         # Compute the magnitude of the spectrum
-        self.mag = np.abs(self.fft)
+        self.magnitude = np.abs(self.fft)
 
         # Compute the phase of the spectrum
         self.phase = np.angle(self.fft)
@@ -164,8 +149,3 @@ class Image:
             np.log(self.fft_shifted.real + 1),
             np.log(self.fft_shifted.imag + 1),
         ]
-
-        # contruct a dictionary to map each component to its type
-        self.type_to_component = dict(
-            zip(["magnitude", "phase", "real", "imaginary"], self.components_shifted)
-        )

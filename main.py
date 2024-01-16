@@ -155,7 +155,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.viewWidgets[i].ui.menuBtn.hide()
                     self.viewWidgets[i].ui.histogram.hide()
 
-                self.viewWidgets[i].setImage(current_images[i].get_img())
+                self.viewWidgets[i].setImage(current_images[i].get_image())
 
                 if self.freqViewWidgets[i] == None:
                     realGraph = pg.ImageView()
@@ -168,7 +168,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
                 currentMode = self.componentsTypes[i]
                 if currentMode == "magnitude":
-                    self.freqViewWidgets[i].setImage(current_images[i].get_mag())
+                    self.freqViewWidgets[i].setImage(current_images[i].get_magnitude())
                 elif currentMode == "phase":
                     self.freqViewWidgets[i].setImage(current_images[i].get_phase())
                 elif currentMode == "real":
@@ -226,12 +226,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.currentOutput = index
 
     def handleChangeImageMode(self, index, i):
+        if i + 1 > len(self.gallery.get_gallery()):
+            return
+
         mode = modes[index]
         image = self.gallery.get_gallery()[i]
 
         graph = self.freqViewWidgets[i]
         if mode == "Magnitude":
-            graph.setImage(image.get_mag())
+            graph.setImage(image.get_magnitude())
         elif mode == "Phase":
             graph.setImage(image.get_phase())
         elif mode == "Real":

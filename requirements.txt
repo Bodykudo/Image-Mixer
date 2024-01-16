@@ -1,0 +1,6 @@
+numpy==1.26.3
+opencv_python==4.9.0.80
+PyQt6==6.6.1
+PyQt6_sip==13.6.0
+pyqtgraph==0.13.3
+tqdm==4.66.1
